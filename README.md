@@ -67,53 +67,10 @@ Deleção da aplicação
    - Internet Gateway (detach da VPC antes)  
    - VPC  
  
+## Objetivo do Repositório
 
-### Diagrama da Stack  
+* Ser uma fonte de pesquisa rápida para iniciantes
 
-```mermaid
-flowchart TB
-  subgraph VPC [VPC]
-    IGW[Internet Gateway]
-    NAT[NAT Gateway]
-    ALB[Application Load Balancer]
-    ASG[Auto Scaling Group]
-    EC2[EC2 Instances]
-    RDS[(RDS Database)]
-    S3[(S3 Bucket)]
-    Lambda[Lambda Functions]
-    SNS[SNS Topic]
-    SG[Security Groups]
-    CW[CloudWatch]
-  end
+* Ensinar boas práticas de ciclo de vida (criação → uso → deleção)
 
-  ALB --> ASG
-  ASG --> EC2
-  EC2 --> RDS
-  EC2 --> S3
-  Lambda --> S3
-  Lambda --> SNS
-  SNS --> Lambda
-  EC2 -->|logs| CW
-  Lambda -->|logs| CW
-  ALB -->|logs| CW
-
-
----
-
-## 2. Fluxo da Ordem de Deleção
-
-
-```mermaid
-flowchart TD
-    A[Lambdas e SNS] --> B[S3 (esvaziar e deletar)]
-    B --> C[RDS (encerrar)]
-    C --> D[CloudWatch (alarmes + log groups)]
-    D --> E[Auto Scaling Group]
-    E --> F[Target Groups e Load Balancer]
-    F --> G[Instâncias EC2]
-    G --> H[NAT Gateway + Elastic IP]
-    H --> I[Route Tables + Security Groups]
-    I --> J[Subnets]
-    J --> K[Internet Gateway]
-    K --> L[VPC]
-
+* Evitar custos inesperados por recursos esquecidos
