@@ -72,36 +72,37 @@ Deleção da aplicação
 
 ```mermaid
 flowchart TB
-    subgraph VPC[VPC]
-        IGW[Internet Gateway]
-        NAT[NAT Gateway]
-        ALB[Application Load Balancer]
-        ASG[Auto Scaling Group]
-        EC2[EC2 Instances]
-        RDS[(RDS Database)]
-        S3[(S3 Bucket)]
-        Lambda[Lambda Functions]
-        SNS[SNS Topic]
-        SG[Security Groups]
-    end
+  subgraph VPC [VPC]
+    IGW[Internet Gateway]
+    NAT[NAT Gateway]
+    ALB[Application Load Balancer]
+    ASG[Auto Scaling Group]
+    EC2[EC2 Instances]
+    RDS[(RDS Database)]
+    S3[(S3 Bucket)]
+    Lambda[Lambda Functions]
+    SNS[SNS Topic]
+    SG[Security Groups]
+    CW[CloudWatch]
+  end
 
-    ALB --> ASG
-    ASG --> EC2
-    EC2 --> RDS
-    EC2 --> S3
-    Lambda --> S3
-    Lambda --> SNS
-    SNS --> Lambda
-    EC2 -->|Logs| CW[CloudWatch]
-    Lambda -->|Logs| CW
-    ALB -->|Logs| CW
+  ALB --> ASG
+  ASG --> EC2
+  EC2 --> RDS
+  EC2 --> S3
+  Lambda --> S3
+  Lambda --> SNS
+  SNS --> Lambda
+  EC2 -->|logs| CW
+  Lambda -->|logs| CW
+  ALB -->|logs| CW
 
 
 ---
 
 ## 2. Fluxo da Ordem de Deleção
 
-```markdown
+
 ```mermaid
 flowchart TD
     A[Lambdas e SNS] --> B[S3 (esvaziar e deletar)]
